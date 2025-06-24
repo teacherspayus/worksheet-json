@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h3>Worksheet JSON Generator</h3>
+    <input id="prompt" type="text" placeholder="Enter prompt (e.g., 8 MS-PS1-2)">
+    <button onclick="getJSON()">Get Worksheet JSON</button>
+    <br><br>
+    <pre id="result" style="background:#f7f7f7; padding:1em; border:1px solid #ddd; max-width:600px;"></pre>
+
+    <script>
+      async function getJSON() {
+        document.getElementById('result').textContent = "Loading...";
+        const prompt = document.getElementById('prompt').value;
+        const res = await fetch('https://script.google.com/macros/s/AKfycbwkbmeJwnSJORR0XWctGNvbuSz2oLQfKAcg0s4ae9gmZAN59N9zWb8SAdwcdnT-54iP/exec', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+        const txt = await res.text();
+        try {
+          document.getElementById('result').textContent = JSON.stringify(JSON.parse(txt), null, 2);
+        } catch {
+          document.getElementById('result').textContent = txt;
+        }
+      }
+    </script>
+  </body>
+</html>
